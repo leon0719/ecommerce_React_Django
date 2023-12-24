@@ -1,5 +1,36 @@
 {
   "$schema": "https://aka.ms/codetour-schema",
   "title": "intro",
-  "steps": []
+  "steps": [
+    {
+      "file": "frontend/src/screens/HomeScreen.js",
+      "description": "key={product._id}:\r\n\r\n這是React中特有的屬性，用於標識列表中的每個元素，以協助React識別元素的變化。\r\nproduct._id通常是每個產品（或列表中的每個項目）的唯一標識符。\r\nxs={12} sm={12} md={6} lg={4} xl={3}:\r\n\r\n這些屬性用於指定Col組件在不同屏幕寬度下的列寬。\r\nxs, sm, md, lg, xl分別代表不同的螢幕大小，即Extra Small、Small、Medium、Large、Extra Large。\r\n數字（例如12）表示該列佔據的格數，總格數通常為12。\r\n<h3>{product.name}</h3>:\r\n\r\n在每個Col元素內部，你包含了一個<h3>元素，顯示了product.name，這可能是產品的名稱或標題。",
+      "line": 11
+    },
+    {
+      "file": "frontend/src/components/Product.js",
+      "description": "在React Bootstrap的<Card>組件中，variant屬性用於指定卡片的變體（variant）。卡片（Card）是一種常見的UI元素，通常用於顯示信息，圖片，或其他內容。variant屬性允許你定制卡片的外觀風格。\r\n\r\n對於<Card.Img>，variant屬性定義了圖片的變體，即指定圖片的顯示方式。在你提供的代碼片段中，variant='top'表示圖片將位於卡片的頂部。這種設置通常用於將圖片作為卡片的主要頭部或特色展示。\r\n\r\n除了variant='top'之外，<Card.Img>還支持其他變體，具體取決於你希望實現的外觀效果。以下是一些常見的variant值：\r\n\r\n'top': 圖片位於卡片的頂部。\r\n'bottom': 圖片位於卡片的底部。\r\n'left': 圖片位於卡片的左側。\r\n'right': 圖片位於卡片的右側。",
+      "line": 7
+    },
+    {
+      "file": "frontend/src/components/Product.js",
+      "description": "as屬性用於指定渲染的HTML元素類型，它允許你替換<Card.Title>默認的<h4>元素為其他HTML元素，比如<div>。",
+      "line": 12
+    },
+    {
+      "file": "frontend/src/App.js",
+      "description": "將您的 Route 元件包裝在 Routes 元件中",
+      "line": 5
+    },
+    {
+      "file": "frontend/src/components/Product.js",
+      "description": "路由感知:\r\n\r\nLink 元件是 React Router 提供的，能夠與應用程式的路由系統整合。\r\n它能夠阻止整個頁面的重新載入，並通知 React Router 更新 URL，而不觸發完整的頁面刷新。\r\n性能優勢:\r\n\r\n在單頁應用程式（SPA）中，使用 Link 元件通常比使用 <a> 標籤效能更好。這是因為 Link 不會導致整個頁面的重新載入，而只會更新應用程式的部分內容。",
+      "line": 4
+    },
+    {
+      "file": "frontend/src/components/Header.js",
+      "description": "這使得在 Bootstrap 元件中使用 React Router 變得更加方便",
+      "line": 3
+    }
+  ]
 }

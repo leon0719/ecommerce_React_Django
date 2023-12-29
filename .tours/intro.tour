@@ -8,6 +8,11 @@
       "line": 11
     },
     {
+      "file": "backend/base/models.py",
+      "description": "具體來說，這個語句導入了 Django 中預設的使用者模型，該模型包含了處理使用者身份驗證所需的欄位和方法。 這些欄位包括使用者名稱、密碼、電子郵件地址等，而方法包括驗證使用者身分、檢查使用者權限等。",
+      "line": 2
+    },
+    {
       "file": "frontend/src/components/Product.js",
       "description": "在React Bootstrap的<Card>組件中，variant屬性用於指定卡片的變體（variant）。卡片（Card）是一種常見的UI元素，通常用於顯示信息，圖片，或其他內容。variant屬性允許你定制卡片的外觀風格。\r\n\r\n對於<Card.Img>，variant屬性定義了圖片的變體，即指定圖片的顯示方式。在你提供的代碼片段中，variant='top'表示圖片將位於卡片的頂部。這種設置通常用於將圖片作為卡片的主要頭部或特色展示。\r\n\r\n除了variant='top'之外，<Card.Img>還支持其他變體，具體取決於你希望實現的外觀效果。以下是一些常見的variant值：\r\n\r\n'top': 圖片位於卡片的頂部。\r\n'bottom': 圖片位於卡片的底部。\r\n'left': 圖片位於卡片的左側。\r\n'right': 圖片位於卡片的右側。",
       "line": 7

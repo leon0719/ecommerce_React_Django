@@ -16,10 +16,11 @@ import {
   Card,
 } from "react-bootstrap";
 import Message from "../components/Message";
-import { addToCart } from "../actions/cartActions";
+import { addToCart, removeFromCart } from "../actions/cartActions";
 
 function CartScreen() {
-  const productId = useParams();
+  const productParams = useParams();
+  const productId = productParams.id;
   const [searchqty, setSearchqty] = useSearchParams();
   const qty = Number(searchqty.get("qty")) ? Number(searchqty.get("qty")) : 1;
   const dispatch = useDispatch();
@@ -29,21 +30,21 @@ function CartScreen() {
 
   useEffect(() => {
     if (productId) {
-      dispatch(addToCart(productId.id, qty));
+      dispatch(addToCart(productId, qty));
     }
   }, [dispatch, productId, qty]);
-  const removeFromCartHandler = () => {
-    console.log('remove: ', productId.id)
-  }
+  const removeFromCartHandler = (productId) => {
+    dispatch(removeFromCart(productId));
+  };
   const checkoutHandler = () => {
     history("/login?redirect=shipping");
-  }
+  };
 
   return (
     <Row>
       <Col md={8}>
         <h1>Shopping Cart</h1>
-        {productId.length === 0 ? (
+        {productId.length === 1 ? (
           <Message variant="info">
             Your cart is empty <Link to="/">Go Back</Link>
           </Message>
@@ -77,9 +78,11 @@ function CartScreen() {
                     </Form.Control>
                   </Col>
                   <Col md={1}>
-                    <Button type="button"
-                     variant="light"
-                     onClick={() => removeFromCartHandler(item.product)}>
+                    <Button
+                      type="button"
+                      variant="light"
+                      onClick={() => removeFromCartHandler(item.product)}
+                    >
                       <i className="fas fa-trash"></i>
                     </Button>
                   </Col>
@@ -93,8 +96,14 @@ function CartScreen() {
         <Card>
           <ListGroup variant="flush">
             <ListGroup.Item>
-              <h2>Subtotal ({cartItems.reduce((acc, item) => acc + item.qty, 0)}) items</h2>
-              ${cartItems.reduce((acc, item) => acc + item.qty * item.price, 0).toFixed(2)}
+              <h2>
+                Subtotal ({cartItems.reduce((acc, item) => acc + item.qty, 0)})
+                items
+              </h2>
+              $
+              {cartItems
+                .reduce((acc, item) => acc + item.qty * item.price, 0)
+                .toFixed(2)}
             </ListGroup.Item>
           </ListGroup>
 
@@ -103,9 +112,10 @@ function CartScreen() {
               type="button"
               className="btn-block"
               disabled={cartItems.length === 0}
-              onClick={checkoutHandler}>
-                Proceed To Checkout
-              </Button>
+              onClick={checkoutHandler}
+            >
+              Proceed To Checkout
+            </Button>
           </ListGroup.Item>
         </Card>
       </Col>

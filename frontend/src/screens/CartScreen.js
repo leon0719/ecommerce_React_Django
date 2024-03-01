@@ -44,7 +44,7 @@ function CartScreen() {
     <Row>
       <Col md={8}>
         <h1>Shopping Cart</h1>
-        {productId.length === 1 ? (
+        {productId.length === 0 ? (
           <Message variant="info">
             Your cart is empty <Link to="/">Go Back</Link>
           </Message>
@@ -120,7 +120,7 @@ function CartScreen() {
         </Card>
       </Col>
     </Row>
-  );
+  )
 }
 
 export default CartScreen;

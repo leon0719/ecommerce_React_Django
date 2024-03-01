@@ -6,7 +6,7 @@ from rest_framework_simplejwt.views import (
 
 
 urlpatterns = [
-    path('api/users/login', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path("api/users/login", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("api", views.getRoutes, name="routes"),
     path("api/products", views.getProducts, name="products"),
     path("api/product/<str:pk>", views.getProduct, name="product"),

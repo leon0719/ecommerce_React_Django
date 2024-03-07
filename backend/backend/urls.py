@@ -34,12 +34,14 @@ schema_view = swagger_get_schema_view(
 
 urlpatterns = [
     path("admin", admin.site.urls),
-    path("", include("base.urls")),
     path(
         "swagger/schema",
         schema_view.with_ui("swagger", cache_timeout=0),
         name="schema-swagger-ui",
     ),
+    path("api/products/", include("base.urls.product_urls")),
+    path("api/users/", include("base.urls.user_urls")),
+    path("api/orders/", include("base.urls.order_urls")),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

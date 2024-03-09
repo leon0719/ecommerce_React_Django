@@ -17,6 +17,7 @@ def getProduct(request, pk):
     serializer = ProductSerializer(product, many=False)
     return Response(serializer.data)
 
+
 @api_view(["GET"])
 def hello(request):
     return Response("Hello Django")

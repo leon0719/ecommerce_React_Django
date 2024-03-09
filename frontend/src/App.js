@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import HomeScreen from "./screens/HomeScreen";
 import ProductScreen from "./screens/ProductScreen";
 import CartScreen from "./screens/CartScreen";
+import LoginScreen from "./screens/LoginScreen";
 function App() {
   return (
     <Router>
@@ -12,7 +13,8 @@ function App() {
       <main className="py-3">
         <Container>
         <Routes>
-        <Route path='/' element={<HomeScreen></HomeScreen>} />
+        <Route path='/' element={<HomeScreen></HomeScreen>}/>
+        <Route path='/login' element={<LoginScreen></LoginScreen>} />
         <Route path='/product/:id' element={<ProductScreen></ProductScreen>} />
         <Route path='/cart/:id' element={<CartScreen></CartScreen>} />
         </Routes>

@@ -32,8 +32,8 @@ export const login = (email, password) => async (dispatch) => {
     const { data } = await axios.post(
       "/api/users/login/",
       {
-        username: email,
-        password: password,
+        'username': email,
+        'password': password,
       },
       config
     );
@@ -41,7 +41,9 @@ export const login = (email, password) => async (dispatch) => {
       type: USER_LOGIN_SUSSESS,
       payload: data,
     });
+
     localStorage.setItem("userInfo", JSON.stringify(data));
+    
   } catch (error) {
     dispatch({
       type: USER_LOGIN_FAIL,

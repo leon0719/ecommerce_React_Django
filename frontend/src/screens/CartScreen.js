@@ -21,7 +21,7 @@ import { addToCart, removeFromCart } from "../actions/cartActions";
 function CartScreen() {
   const productParams = useParams();
   const productId = productParams.id;
-  const [searchqty, setSearchqty] = useSearchParams();
+  const [searchqty] = useSearchParams();
   const qty = Number(searchqty.get("qty")) ? Number(searchqty.get("qty")) : 1;
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
@@ -33,8 +33,9 @@ function CartScreen() {
       dispatch(addToCart(productId, qty));
     }
   }, [dispatch, productId, qty]);
-  const removeFromCartHandler = (productId) => {
-    dispatch(removeFromCart(productId));
+
+  const removeFromCartHandler = (id) => {
+    dispatch(removeFromCart(id));
   };
   const checkoutHandler = () => {
     history("/shipping");
@@ -44,7 +45,7 @@ function CartScreen() {
     <Row>
       <Col md={8}>
         <h1>Shopping Cart</h1>
-        {productId.length === 0 ? (
+        {cartItems.length === 0 ? (
           <Message variant="info">
             Your cart is empty <Link to="/">Go Back</Link>
           </Message>

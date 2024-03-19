@@ -24,7 +24,7 @@ function OrderScreen() {
     if (!order || order._id !== Number(orderId)) {
       dispatch(getOrderDetails(orderId));
     }
-  }, [order, orderId]);
+  }, [dispatch, order, orderId]);
 
   // 首先檢查loading變數的值，如果為真，則返回<Loader />元件，表示正在加載中。
   // 如果loading為假，則繼續檢查error變數。如果error為真，則返回帶有指定錯誤訊息的<Message>元件，

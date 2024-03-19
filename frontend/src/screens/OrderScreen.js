@@ -2,17 +2,24 @@ import React, { useState, useEffect } from "react";
 import { Button, Row, Col, ListGroup, Image, Card } from "react-bootstrap";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { PayPalButton } from "react-paypal-button-v2";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
-import { getOrderDetails } from "../actions/orderActions";
+import { getOrderDetails, payOrder } from "../actions/orderActions";
+import { ORDER_PAY_RESET } from "../constants/orderConstants";
 
 function OrderScreen() {
   const orderParams = useParams();
   const orderId = orderParams.id;
   const dispatch = useDispatch();
 
+  const [sdkReady, setSdkReady] = useState(false);
+
   const orderDetails = useSelector((state) => state.orderDetails);
   const { order, error, loading } = orderDetails;
+
+  const orderPay = useSelector((state) => state.orderPay);
+  const { loading: loadingPay, success: successPay } = orderPay;
 
   if (!loading && !error) {
     order.itemsPrice = order.orderItems
@@ -20,11 +27,34 @@ function OrderScreen() {
       .toFixed(2);
   }
 
+  const addPayPalScript = () => {
+    const script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src =
+      "https://www.paypal.com/sdk/js?client-id=AaH3dxWc67NKKU3SuJ3U2V21QnRwkMDxaxgWOOr532u2dAlb_hyGGLm6lnx0evDWY_Sm44TCdug1jM4y";
+    script.async = true;
+    script.onload = () => {
+      setSdkReady(true);
+    };
+    document.body.appendChild(script);
+  };
+
   useEffect(() => {
-    if (!order || order._id !== Number(orderId)) {
+    if (!order || successPay || order._id !== Number(orderId)) {
+      dispatch({ type: ORDER_PAY_RESET });
       dispatch(getOrderDetails(orderId));
+    } else if (!order.isPaid) {
+      if (!window.paypal) {
+        addPayPalScript();
+      } else {
+        setSdkReady(true);
+      }
     }
-  }, [dispatch, order, orderId]);
+  }, [dispatch, order, orderId, successPay]);
+
+  const successPaymentHandler = (paymentResult) => {
+    dispatch(payOrder(orderId, paymentResult));
+  };
 
   // 首先檢查loading變數的值，如果為真，則返回<Loader />元件，表示正在加載中。
   // 如果loading為假，則繼續檢查error變數。如果error為真，則返回帶有指定錯誤訊息的<Message>元件，
@@ -60,11 +90,12 @@ function OrderScreen() {
               </p>
 
               {order.isDelivered ? (
-                <Message variant="success">Delivered on {order.DeliveredAt}</Message>
-              ): (
+                <Message variant="success">
+                  Delivered on {order.DeliveredAt}
+                </Message>
+              ) : (
                 <Message variant="warning">Not Delivered</Message>
               )}
-
             </ListGroup.Item>
 
             <ListGroup.Item>
@@ -75,7 +106,7 @@ function OrderScreen() {
               </p>
               {order.isPaid ? (
                 <Message variant="success">Paid on {order.paidAt}</Message>
-              ): (
+              ) : (
                 <Message variant="warning">Not Paid</Message>
               )}
             </ListGroup.Item>
@@ -151,6 +182,21 @@ function OrderScreen() {
                   <Col>${order.totalPrice}</Col>
                 </Row>
               </ListGroup.Item>
+
+              {!order.isPaid && (
+                <ListGroup.Item>
+                  {loadingPay && <Loader></Loader>}
+
+                  {!sdkReady ? (
+                    <Loader></Loader>
+                  ) : (
+                    <PayPalButton
+                      amount={order.totalPrice}
+                      onSuccess={successPaymentHandler}
+                    ></PayPalButton>
+                  )}
+                </ListGroup.Item>
+              )}
             </ListGroup>
           </Card>
         </Col>

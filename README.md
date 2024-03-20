@@ -1,8 +1,11 @@
 # PropShop Ecommerce Website With Django + React
 
 
-![DEMO](static/images/proshop_django_demo.png)
-
+![DEMO](static/images/website_demo.png)
+![DEMO](static/images/website_demo2.jpg)
+![DEMO](static/images/website_demo3.jpg)
+![DEMO](static/images/website_demo4.jpg)
+![DEMO](static/images/website_demo5.jpg)
 
 # Features
 * Full featured shopping cart

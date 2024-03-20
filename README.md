@@ -22,12 +22,13 @@
 # Download & Setup Instructions
 
 * 1 - Clone project: git clone https://github.com/leon0719/ecommerce_React_Django.git
-* 2 - cd proshop_django
+* 2 - cd ecommerce_React_Django
 * 3 - Create virtual environment: virtualenv myenv
-* 4 - myenv\scripts\activate
+* 4 - source myenv/scripts/activate
 * 5 - pip install -r requirements.txt
 * 6 - python manage.py runserver
 
 # Install react modules
 * 1 - cd frontend
 * 2 - npm install
+* 3 - npm start

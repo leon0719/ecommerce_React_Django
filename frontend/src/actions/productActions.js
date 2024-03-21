@@ -39,7 +39,7 @@ export const listProductDetails = (id) => async (dispatch) => {
     dispatch({
       type: PRODUCT_DETAILS_FAIL,
       payload:
-        error.response && error.response.data.detail
+        error.response && error.response.data.detail // error.response 和 error.response.data.detail 是 axios 內建屬性
           ? error.response.data.detail
           : error.message,
     })

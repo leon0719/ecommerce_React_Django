@@ -2,7 +2,6 @@ import pytest
 from django.contrib.auth.models import User
 from base.models import Product
 from faker import Faker
-from django.core.exceptions import ValidationError
 
 fake = Faker()
 

@@ -1,11 +1,9 @@
-from django.shortcuts import render
-
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from base.models import Product, Order, OrderItem, ShippingAddress
-from base.serializers import ProductSerializer, OrderSerializer
+from base.models import Product, Order, OrderItem
+from base.serializers import OrderSerializer
 
 from rest_framework import status
 from datetime import datetime
@@ -36,13 +34,13 @@ def addOrderItems(request):
 
         # (2) Create shipping address ORM
 
-        shipping = ShippingAddress.objects.create(
-            order=order,
-            address=data["shippingAddress"]["address"],
-            city=data["shippingAddress"]["city"],
-            postalCode=data["shippingAddress"]["postalCode"],
-            country=data["shippingAddress"]["country"],
-        )
+        # shipping = ShippingAddress.objects.create(
+        #     order=order,
+        #     address=data["shippingAddress"]["address"],
+        #     city=data["shippingAddress"]["city"],
+        #     postalCode=data["shippingAddress"]["postalCode"],
+        #     country=data["shippingAddress"]["country"],
+        # )
 
         # (3) Create order items and set order to orderItem relationship
         for i in orderItems:
@@ -89,7 +87,7 @@ def getOrderById(request, pk):
                 {"detail": "Not authorized to view this order"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
-    except Exception as e:
+    except Exception:
         return Response(
             {"detail": "Order does not exist"}, status=status.HTTP_400_BAD_REQUEST
         )

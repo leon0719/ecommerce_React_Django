@@ -5,11 +5,6 @@ repos:
     -   id: trailing-whitespace
     -   id: end-of-file-fixer
 # For Python files
--   repo: https://github.com/psf/black.git
-    rev: 23.3.0
-    hooks:
-    -   id: black
-        files: (.*\.(py|pyi|bzl)|BUILD|.*\.BUILD|WORKSPACE)$
 -   repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.2.0
     hooks:

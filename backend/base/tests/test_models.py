@@ -18,7 +18,6 @@ def product(user):
         name=fake.name(),
         image=fake.image_url(),
         brand=fake.company(),
-        category=fake.random_element(elements=("Electronics", "Clothing", "Books")),
         description=fake.text(),
         rating=fake.pydecimal(left_digits=1, right_digits=2, positive=True),
         price=fake.pydecimal(left_digits=4, right_digits=2, positive=True),

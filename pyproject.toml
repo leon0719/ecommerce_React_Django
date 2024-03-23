@@ -25,6 +25,9 @@ faker = "^24.3.0"
 pre-commit = "^3.6.2"
 ruff = "^0.3.4"
 
+[tool.ruff.lint]
+extend-ignore = ["E401"]
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"

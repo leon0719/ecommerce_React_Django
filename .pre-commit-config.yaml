@@ -17,7 +17,7 @@ repos:
     stages: [push]
     types: [python]
     name: pytest-check
-    entry: poetry run pytest backend -v -rs -n auto --show-capture=no
+    entry: .venv/bin/python -m pytest backend -v -rs -n auto --show-capture=no
     language: system
     pass_filenames: false
     always_run: true

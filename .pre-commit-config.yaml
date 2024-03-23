@@ -14,10 +14,10 @@ repos:
 - repo: local
   hooks:
   - id: pytest-check
-    stages: [push]
+    stages: [commit]
     types: [python]
     name: pytest-check
-    entry: .venv/bin/python -m pytest backend -v -rs -n auto --show-capture=no
+    entry: poetry run pytest backend -v -rs -n auto --show-capture=no
     language: system
     pass_filenames: false
     always_run: true

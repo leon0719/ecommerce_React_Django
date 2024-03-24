@@ -3,25 +3,24 @@ import {
   USER_LOGIN_SUSSESS,
   USER_LOGIN_FAIL,
   USER_LOGOUT,
-
   USER_REGISTER_REQUEST,
   USER_REGISTER_SUSSESS,
   USER_REGISTER_FAIL,
-
   USER_DETAILS_REQUEST,
   USER_DETAILS_SUSSESS,
   USER_DETAILS_FAIL,
   USER_DETAILS_RESET,
-
   USER_UPDATE_PROFILE_REQUEST,
   USER_UPDATE_PROFILE_SUSSESS,
   USER_UPDATE_PROFILE_FAIL,
   USER_UPDATE_PROFILE_RESET,
-
   USER_LIST_REQUEST,
   USER_LIST_SUSSESS,
   USER_LIST_FAIL,
   USER_LIST_RESET,
+  USER_DELETE_REQUEST,
+  USER_DELETE_SUSSESS,
+  USER_DELETE_FAIL,
 } from "../constants/userConstants";
 
 export const userLoginReducer = (state = {}, action) => {
@@ -100,9 +99,7 @@ export const userUpdateProfileReducer = (state = {}, action) => {
   }
 };
 
-
-
-export const userListReducer = (state = {users:[]}, action) => {
+export const userListReducer = (state = { users: [] }, action) => {
   switch (action.type) {
     case USER_LIST_REQUEST:
       return { loading: true };
@@ -114,8 +111,23 @@ export const userListReducer = (state = {users:[]}, action) => {
       return { loading: false, error: action.payload };
 
     case USER_LIST_RESET:
-      return {users:[]};
+      return { users: [] };
 
+    default:
+      return state;
+  }
+};
+
+export const userDeleteReducer = (state = {}, action) => {
+  switch (action.type) {
+    case USER_DELETE_REQUEST:
+      return { loading: true };
+
+    case USER_DELETE_SUSSESS:
+      return { loading: false, success: true };
+
+    case USER_DELETE_FAIL:
+      return { loading: false, error: action.payload };
 
     default:
       return state;

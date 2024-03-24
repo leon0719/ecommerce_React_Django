@@ -15,6 +15,11 @@ import {
   USER_UPDATE_PROFILE_SUSSESS,
   USER_UPDATE_PROFILE_FAIL,
   USER_UPDATE_PROFILE_RESET,
+
+  USER_LIST_REQUEST,
+  USER_LIST_SUSSESS,
+  USER_LIST_FAIL,
+  USER_LIST_RESET,
 } from "../constants/userConstants";
 
 import { ORDER_LIST_MY_RESET } from '../constants/orderConstants'
@@ -45,7 +50,7 @@ export const login = (email, password) => async (dispatch) => {
     });
 
     localStorage.setItem("userInfo", JSON.stringify(data));
-    
+
   } catch (error) {
     dispatch({
       type: USER_LOGIN_FAIL,
@@ -62,6 +67,7 @@ export const logout = () => (dispatch) => {
   dispatch({ type: USER_LOGOUT });
   dispatch({ type: USER_DETAILS_RESET });
   dispatch({ type: ORDER_LIST_MY_RESET })
+  dispatch({ type: USER_LIST_RESET })
 };
 
 export const register = (name, email, password) => async (dispatch) => {
@@ -121,7 +127,7 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
     };
 
     const { data } = await axios.get(
-      `/api/users/${id}/`, 
+      `/api/users/${id}/`,
       config);
 
     dispatch({
@@ -158,8 +164,8 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
     };
 
     const { data } = await axios.put(
-      `/api/users/profile/update/`, 
-      user, 
+      `/api/users/profile/update/`,
+      user,
       config);
 
     dispatch({
@@ -175,7 +181,45 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
 
   } catch (error) {
     dispatch({
-      type: USER_DETAILS_FAIL,
+      type: USER_UPDATE_PROFILE_FAIL,
+      payload:
+        error.response && error.response.data.detail
+          ? error.response.data.detail
+          : error.message,
+    });
+  }
+};
+
+
+export const listUsers = () => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: USER_LIST_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo }, //將userLogin中的access token 加入
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.access}`, //將access token 加入header中，以便API發出時能夠驗證是否登入成功。
+      },
+    };
+
+    const { data } = await axios.get(
+      `/api/users/`,
+      config);
+
+    dispatch({
+      type: USER_LIST_SUSSESS,
+      payload: data,
+    });
+
+  } catch (error) {
+    dispatch({
+      type: USER_LIST_FAIL,
       payload:
         error.response && error.response.data.detail
           ? error.response.data.detail

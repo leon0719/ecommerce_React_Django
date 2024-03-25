@@ -81,6 +81,31 @@ def getUsers(request):
     return Response(serializer.data)
 
 
+@api_view(["GET"])
+@permission_classes([IsAdminUser])
+def getUserById(request, pk):
+    users = User.objects.get(id=pk)
+    serializer = UserSerializer(users, many=False)
+    return Response(serializer.data)
+
+
+@api_view(["PUT"])
+@permission_classes([IsAuthenticated])  # restrict(限制)權限
+def updateUser(request, pk):
+    user = User.objects.get(id=pk)
+    data = request.data
+
+    user.first_name = data["name"]
+    user.username = data["email"]
+    user.email = data["email"]
+    user.is_staff = data["isAdmin"]
+
+    user.save()
+    serializer = UserSerializer(user, many=False)
+
+    return Response(serializer.data)
+
+
 @api_view(["DELETE"])
 @permission_classes([IsAdminUser])
 def deleteUser(request, pk):

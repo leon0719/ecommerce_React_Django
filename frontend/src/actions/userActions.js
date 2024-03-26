@@ -22,6 +22,9 @@ import {
   USER_DELETE_REQUEST,
   USER_DELETE_SUSSESS,
   USER_DELETE_FAIL,
+  USER_UPDATE_REQUEST,
+  USER_UPDATE_SUSSESS,
+  USER_UPDATE_FAIL,
 } from "../constants/userConstants";
 
 import { ORDER_LIST_MY_RESET } from "../constants/orderConstants";
@@ -249,6 +252,48 @@ export const deleteUser = (id) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: USER_DELETE_FAIL,
+      payload:
+        error.response && error.response.data.detail
+          ? error.response.data.detail
+          : error.message,
+    });
+  }
+};
+
+export const updateUser = (user) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: USER_UPDATE_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo }, //將userLogin中的access token 加入
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.access}`, //將access token 加入header中，以便API發出時能夠驗證是否登入成功。
+      },
+    };
+
+    const { data } = await axios.put(
+      `/api/users/update/${user._id}/`,
+      user,
+      config
+    );
+
+    dispatch({
+      type: USER_UPDATE_SUSSESS,
+    });
+
+    dispatch({
+      type: USER_DETAILS_SUSSESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: USER_UPDATE_FAIL,
       payload:
         error.response && error.response.data.detail
           ? error.response.data.detail

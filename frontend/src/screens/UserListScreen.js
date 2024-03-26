@@ -25,7 +25,7 @@ function UserListScreen() {
     if (userInfo && userInfo.isAdmin) {
       dispatch(listUsers());
     } else history("/login", { replace: true });
-  }, [dispatch, history, successDelete]);
+  }, [dispatch, history, ,successDelete, userInfo]);
 
   const deleteHandler = (id) => {
     if (window.confirm("Are you sure you want delete this user")) {

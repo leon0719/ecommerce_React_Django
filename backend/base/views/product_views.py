@@ -4,6 +4,7 @@ from base.models import Product
 from base.serializers import ProductSerializer
 from rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAdminUser
+from rest_framework import status
 
 
 @api_view(["GET"])
@@ -62,6 +63,16 @@ def deleteProduct(request, pk):
     product = Product.objects.get(_id=pk)  # SELECT * FROM product WHERE id = pk;
     product.delete()
     return Response("Producte Deleted")
+
+
+@api_view(["POST"])
+def uploadImage(request):
+    data = request.data
+    product_id = data["product_id"]
+    product = Product.objects.get(_id=product_id)
+    product.image = request.FILES.get("image")
+    product.save()
+    return Response("Image was uploaded", status=status.HTTP_201_CREATED)
 
 
 @api_view(["GET"])

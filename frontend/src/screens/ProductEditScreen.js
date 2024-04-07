@@ -5,13 +5,14 @@ import {
   useSearchParams,
   useParams,
 } from "react-router-dom";
+import axios from "axios";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 import FormContainer from "../components/FormContainer";
 import { listProductDetails, updateProduct } from "../actions/productActions";
-import { PRODUCT_UPDATE_RESET } from '../constants/productConstants'
+import { PRODUCT_UPDATE_RESET } from "../constants/productConstants";
 
 function ProductEditScreen() {
   const productParams = useParams();
@@ -24,6 +25,7 @@ function ProductEditScreen() {
   const [category, setCategory] = useState("");
   const [countInStock, setCountInStock] = useState(0);
   const [description, setDescription] = useState("");
+  const [uploading, setUploading] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -31,14 +33,18 @@ function ProductEditScreen() {
   const { error, loading, product } = productDetails;
 
   const productUpdate = useSelector((state) => state.productUpdate);
-  const {error:errorUpdate, loading:loadingUpdate, success:successUpdate} = productUpdate
+  const {
+    error: errorUpdate,
+    loading: loadingUpdate,
+    success: successUpdate,
+  } = productUpdate;
 
   const history = useNavigate();
 
   useEffect(() => {
     if (successUpdate) {
-      dispatch({type: PRODUCT_UPDATE_RESET})
-      history("/admin/productlist")
+      dispatch({ type: PRODUCT_UPDATE_RESET });
+      history("/admin/productlist");
     } else {
       if (!product.name || product._id !== Number(productId)) {
         dispatch(listProductDetails(productId));
@@ -56,16 +62,39 @@ function ProductEditScreen() {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(updateProduct({
-      _id:productId,
-      name,
-      price,
-      image,
-      brand,
-      category,
-      countInStock,
-      description
-    }))
+    dispatch(
+      updateProduct({
+        _id: productId,
+        name,
+        price,
+        image,
+        brand,
+        category,
+        countInStock,
+        description,
+      })
+    );
+  };
+
+  const uploadFileHandler = async (e) => {
+    const file = e.target.files[0] // first file
+    const formData = new FormData()
+    formData.append('image', file) // key value
+    formData.append('product_id', productId)
+    setUploading(true)
+
+    try {
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+      const { data } = await axios.post('/api/products/upload/', formData, config)
+      setImage(data)
+      setUploading(false)
+    }catch(error){
+      setUploading(false)
+    }
   };
 
   return (
@@ -109,6 +138,14 @@ function ProductEditScreen() {
                 value={image}
                 onChange={(e) => setImage(e.target.value)}
               ></Form.Control>
+              <Form.Control
+                controlId="image-file"
+                type="file"
+                placeholder="Upload File"
+                label="Choose File"
+                onChange={uploadFileHandler}
+              ></Form.Control>
+              {uploading && <Loader />}
             </Form.Group>
 
             <Form.Group controlId="brand">

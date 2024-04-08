@@ -1,5 +1,5 @@
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 
 from base.models import Product, Order, OrderItem
@@ -73,7 +73,7 @@ def getMyOrders(request):
 
 
 @api_view(["GET"])
-@permission_classes([IsAuthenticated])
+@permission_classes([IsAdminUser])
 def getOrders(request):
     orders = Order.objects.all()
     serializer = OrderSerializer(orders, many=True)
@@ -108,5 +108,16 @@ def updateOrderToPaid(request, pk):
 
     order.isPaid = True
     order.paidAt = datetime.now()
+    order.save()
+    return Response("Order was paid")
+
+
+@api_view(["PUT"])
+@permission_classes([IsAdminUser])
+def updateOrderToDelivered(request, pk):
+    order = Order.objects.get(_id=pk)
+
+    order.isDelivered = True
+    order.deliveredAt = datetime.now()
     order.save()
     return Response("Order was paid")

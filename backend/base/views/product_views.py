@@ -79,50 +79,41 @@ def uploadImage(request):
 @permission_classes([IsAuthenticated])
 def createProductReview(request, pk):
     user = request.user
-
-    try:
-        product = Product.objects.get(_id=pk)
-    except Product.DoesNotExist:
-        return Response(
-            {"detail": "Product not found"}, status=status.HTTP_404_NOT_FOUND
-        )
-
+    product = Product.objects.get(_id=pk)
     data = request.data
-    rating = data.get("rating")
-    comment = data.get("comment")
 
-    if not rating:
-        return Response(
-            {"detail": "Please provide a rating"}, status=status.HTTP_400_BAD_REQUEST
+    # 1 - Review already exists
+    alreadyExists = product.review_set.filter(user=user).exists()
+    if alreadyExists:
+        content = {"detail": "Product already reviewed"}
+        return Response(content, status=status.HTTP_400_BAD_REQUEST)
+
+    # 2 - No Rating or 0
+    elif data["rating"] == 0:
+        content = {"detail": "Please select a rating"}
+        return Response(content, status=status.HTTP_400_BAD_REQUEST)
+
+    # 3 - Create review
+    else:
+        Review.objects.create(
+            user=user,
+            product=product,
+            name=user.first_name,
+            rating=data["rating"],
+            comment=data["comment"],
         )
 
-    if not (1 <= rating <= 5):
-        return Response(
-            {"detail": "Rating must be between 1 and 5"},
-            status=status.HTTP_400_BAD_REQUEST,
-        )
+        reviews = product.review_set.all()
+        product.numReviews = len(reviews)
 
-    if Review.objects.filter(user=user, product=product).exists():
-        return Response(
-            {"detail": "Product already reviewed"}, status=status.HTTP_400_BAD_REQUEST
-        )
+        total = 0
+        for i in reviews:
+            total += i.rating
 
-    Review.objects.create(
-        user=user,
-        product=product,
-        name=user.first_name,
-        rating=rating,
-        comment=comment,
-    )
+        product.rating = total / len(reviews)
+        product.save()
 
-    reviews = product.review_set.all()
-    num_reviews = reviews.count()
-    total_rating = sum(review.rating for review in reviews)
-    product.numReviews = num_reviews
-    product.rating = total_rating / num_reviews
-    product.save()
-
-    return Response({"detail": "Review Added"}, status=status.HTTP_201_CREATED)
+        return Response("Review Added")
 
 
 @api_view(["GET"])

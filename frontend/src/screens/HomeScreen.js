@@ -3,17 +3,20 @@ import { Row, Col } from "react-bootstrap";
 import Product from "../components/Product";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { listProducts } from "../actions/productActions";
-
+import { useSearchParams } from 'react-router-dom';
 function HomeScreen() {
+  const history = useNavigate();
   const dispatch = useDispatch();
   const productList = useSelector((state) => state.productList);
   const { error, loading, products } = productList;
-
+  const [searchKeyword] = useSearchParams();
+  console.log(searchKeyword.get('keyword'));
   useEffect(() => {
-    dispatch(listProducts());
-  }, [dispatch]);
+    dispatch(listProducts(searchKeyword));
+  }, [dispatch, searchKeyword]);
   return (
     <div>
       <h1>Latest Products</h1>

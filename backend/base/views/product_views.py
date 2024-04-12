@@ -5,6 +5,7 @@ from base.serializers import ProductSerializer
 from rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework import status
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 @api_view(["GET"])
@@ -15,8 +16,24 @@ def getProducts(request):
     # name__icontains=query是一個篩選條件，它表示我們想要找到name屬性（字段），
     # 其值包含（不區分大小寫）變數query中指定的字串
     products = Product.objects.filter(name__icontains=query)
+    page = request.query_params.get("page")
+    paginator = Paginator(products, 2)
+    try:
+        products = paginator.page(page)
+    except PageNotAnInteger:
+        products = paginator.page(1)
+        # 如果page不是整數，則回傳第一頁
+    except EmptyPage:
+        products = paginator.page(paginator.num_pages)
+        # 如果page超出頁數，則回傳最後一頁
+
+    if page is None:
+        page = 1
+    page = int(page)
     serializer = ProductSerializer(products, many=True)
-    return Response(serializer.data)
+    return Response(
+        {"products": serializer.data, "page": page, "pages": paginator.num_pages}
+    )
 
 
 @api_view(["GET"])

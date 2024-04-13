@@ -9,7 +9,7 @@ function SearchBox() {
   const submitHandler = (e) => {
     e.preventDefault();
     if (keyword.trim()) {
-        history(`/?keyword=${keyword}`);
+        history(`/?keyword=${keyword}&page=1`);
     }else{
         history("/")
     }

@@ -21,7 +21,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view as swagger_get_schema_view
-
+from django.views.generic import TemplateView
 
 schema_view = swagger_get_schema_view(
     openapi.Info(
@@ -35,6 +35,8 @@ schema_view = swagger_get_schema_view(
 
 urlpatterns = [
     path("admin", admin.site.urls),
+    # 告訴 TemplateView 要呈現名為 index.html 的模板
+    path("", TemplateView.as_view(template_name="index.html")),
     path(
         "swagger/schema",
         schema_view.with_ui("swagger", cache_timeout=0),

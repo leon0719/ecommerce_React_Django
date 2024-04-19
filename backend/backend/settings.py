@@ -1,7 +1,9 @@
 from datetime import timedelta
 import os
 from pathlib import Path
+from dotenv import load_dotenv
 
+load_dotenv()
 """
 Django settings for backend project.
 
@@ -127,11 +129,11 @@ WSGI_APPLICATION = "backend.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "proshop",
-        "USER": "leon",
-        "PASSWORD": "a0908116100",
-        "HOST": "localhost",
-        "PORT": "5432",
+        "NAME": os.getenv("DATABASE_NAME"),
+        "USER": os.getenv("DATABASE_USER"),
+        "PASSWORD": os.getenv("DATABASE_PASSWORD"),
+        "HOST": os.getenv("DATABASE_HOST"),
+        "PORT": os.getenv("DATABASE_PORT"),
         "ATOMIC_REQUESTS": True,
     }
 }

@@ -13,7 +13,6 @@ def getProducts(request):
     query = request.query_params.get("keyword")
     if query is None:
         query = ""
-    # name__icontains=query是一個篩選條件，它表示我們想要找到name屬性（字段），
     # 其值包含（不區分大小寫）變數query中指定的字串
     products = Product.objects.filter(name__icontains=query)
     page = request.query_params.get("page")

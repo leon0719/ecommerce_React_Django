@@ -9,13 +9,13 @@ function SearchBox() {
   const submitHandler = (e) => {
     e.preventDefault();
     if (keyword.trim()) {
-        history(`/?keyword=${keyword}`);
+        history(`/?keyword=${keyword}&page=1`);
     }else{
         history("/")
     }
   };
   return (
-    <Form onSubmit={submitHandler} inline>
+    <Form onSubmit={submitHandler} inline="true">
       <Form.Control
         type="text"
         name="q"

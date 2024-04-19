@@ -23,7 +23,7 @@ function Header() {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <SearchBox></SearchBox>
-            <Nav className="mr-auto">
+            <Nav className="ml-auto">
               {/* 要去https://cdnjs.com/libraries/font-awesome 安裝到index.html */}
               {/* 可以去https://fontawesome.com/search看icon */}
               <LinkContainer to="/cart">

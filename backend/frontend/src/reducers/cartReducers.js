@@ -47,7 +47,7 @@ export const cartReducer = (
         ...state,
         paymentMethod: action.payload
       }
-    
+
     case CART_CLEAR_ITEMS:
       return {
         ...state,

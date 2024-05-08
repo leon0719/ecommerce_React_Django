@@ -31,6 +31,17 @@
 * 5 - pip install -r requirements.txt
 * 6 - python manage.py runserver
 
+# Create .env file
+
+```
+DATABASE_NAME='xxxxx'
+DATABASE_USER='xxxxx'
+DATABASE_PASSWORD='xxxxx'
+DATABASE_HOST='localhost'
+DATABASE_PORT='5432'
+
+```
+
 # Install react modules
 * 1 - cd frontend
 * 2 - npm install
